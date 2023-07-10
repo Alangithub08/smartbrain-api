@@ -9,18 +9,27 @@ const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
+// connect to your own database here:
 const db = knex({
-    // connect to your own database here:
     client: 'pg',
     connection: {
-      host: 'dpg-cik403enqql0l1vkvi30-a.singapore-postgres.render.com',
-      user: db_8f7z_user,
-      password: 'TvMDOTQC4xbJRxDNkddG3CUXYaHxJCjn',
-      database: db_8f7z
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+      host: process.env.DATABASE_HOST,
+      port: 5432,
+      user: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PW,
+      database: process.env.DATABASE_DB
     }
   });
 
 const app = express();
+// app.use(express.json());
+
+// const dotenv = require('dotenv');
+// dotenv.config();
+
+// const itemsPool = require('./DBconfig');
 
 app.use(cors())
 app.use(bodyParser.json()); // latest version of exressJS now comes with Body-Parser!
@@ -35,4 +44,3 @@ app.post('/imageurl', (req, res) => { image.handleApiCall(req, res)})
 app.listen(process.env.PORT || 3000, ()=> {
   console.log(`app is running on port ${process.env.PORT}`);
 })
-
